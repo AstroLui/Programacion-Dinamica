@@ -41,12 +41,23 @@ def main(page: ft.Page) -> None:
                 [
                     ft.Column([Text("Bienvenido a Calculadora Dinamica", 20, "w150"), Text("Menú", 40, "w800")], 
                     spacing=0, horizontal_alignment=ALIGN_HOR),
-                    ft.Row([ ], 
+                    ft.Row([Button("Trabajo", lambda _: page.go('/trabajo'))], 
                     spacing=10, alignment=ALIGN_VERT),
                     ft.Row([ ], 
                     spacing=10, alignment=ALIGN_VERT)
                 ])
         )
+        
+        # Trabajo
+        if page.route == '/trabajo': 
+            page.views.append(
+                ViewClass('/trabajo', 
+                [
+                    Text("Trabajo", 35, "w800"),
+                    Button("Go to Home", lambda _: page.go('/'))
+                ])
+            )
+
         page.update()
     
     def view_pop(e: ViewPopEvent) -> None:
