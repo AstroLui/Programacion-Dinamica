@@ -91,12 +91,14 @@ class Trabajo():
         print("-" * 80)
         print(f"\nEl costo total de mano de obra para el proyecto es de ${sum(costs)}")
 
-        return {
-            'costo_total': sum(costs),
-            'trabajadores_por_semana': workers[1:],
-            'decisiones': decisions,
-            'costos_por_semana': costs
-        }
+        resultTxt = f"""
+        Costo Total de Mano de Obra: ${sum(costs)}
+        Trabajadores por Semana: {workers[1:]}
+        Decisiones: {decisions}
+        Costos por Semana: {costs}
+        """
+
+        return resultTxt
 
 # Ejemplo de uso
 if __name__ == "__main__":

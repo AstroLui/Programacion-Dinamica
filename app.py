@@ -5,6 +5,7 @@ from flet import RouteChangeEvent, ViewPopEvent
 from classApp.Methods.createTxt import createTXT
 import yaml
 import traceback
+import json
 from classApp.Methods.Trabajo import Trabajo  # Import the Trabajo class
 
 with open('config.yml', 'r') as file:
@@ -64,8 +65,6 @@ def main(page: ft.Page) -> None:
 
                     trabajo = Trabajo(n_semanas, trabajadores_requeridos, costo_excedente, costo_contratacion, costo_contratacion_ex)
                     resultado = trabajo.optimize_workforce()
-                    page.dialog = Alert([Text(f"Resultado: {resultado}")])
-                    page.dialog.open = True
                     modal.openModal(page, "Resultado", [ft.Text(f"Resultado: {resultado}", color=COLOR_SECOND), Button("Cerrar", lambda _: page.close(modal))])
                     createTXT(resultado, "Trabajo")
                     page.update()
