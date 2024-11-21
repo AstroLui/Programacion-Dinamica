@@ -21,6 +21,7 @@ COLOR_SECOND = config['colors']['second']
 
 # ASIGNACION de Clases
 
+
 def main(page: ft.Page) -> None:
     page.title = "Calculadora Programacion Entera"
     page.window.height = HEIGHT
@@ -55,7 +56,7 @@ def main(page: ft.Page) -> None:
             costo_contratacion_field = Field("Costo de contratación", "costo_contratacion")
             costo_contratacion_ex_field = Field("Costo de contratación extra", "costo_contratacion_ex")
 
-            def calcular_trabajo(e):
+            def _(e):
                 try:
                     n_semanas = int(n_semanas_field.getValue())
                     trabajadores_requeridos = list(map(int, trabajadores_requeridos_field.getValue().split(',')))
@@ -65,6 +66,7 @@ def main(page: ft.Page) -> None:
 
                     trabajo = Trabajo(n_semanas, trabajadores_requeridos, costo_excedente, costo_contratacion, costo_contratacion_ex)
                     resultado = trabajo.optimize_workforce()
+                    
                     modal.openModal(page, "Resultado", [ft.Text(f"Resultado: {resultado}", color=COLOR_SECOND), Button("Cerrar", lambda _: page.close(modal))])
                     createTXT(resultado, "Trabajo")
                     page.update()
@@ -87,7 +89,7 @@ def main(page: ft.Page) -> None:
                     costo_excedente_field,
                     costo_contratacion_field,
                     costo_contratacion_ex_field,
-                    Button("Calcular", calcular_trabajo),
+                    Button("Calcular", _),
                     Button("Go to Home", lambda _: page.go('/'))
                 ])
             )

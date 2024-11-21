@@ -16,7 +16,7 @@ class Trabajo():
         self.__c2 = C2
         self.__c3 = C2Mas
  
-    def optimize_workforce(self) -> dict:
+    def optimize_workforce(self) -> str:
         self.__memo = {}
         self.__best_decisions = {}
         
@@ -99,6 +99,7 @@ class Trabajo():
         """
 
         return resultTxt
+
 
 # Ejemplo de uso
 if __name__ == "__main__":
