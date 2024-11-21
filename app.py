@@ -3,10 +3,9 @@ from flet import View
 from classApp.WidgetClass import Button, ViewClass, Field, Text, Alert, ButtonAlert, Modal, FieldArray, Select, FieldMatriz
 from flet import RouteChangeEvent, ViewPopEvent
 from classApp.Methods.createTxt import createTXT
-
-# Import the new class
 import yaml
 import traceback
+from classApp.Methods.Trabajo import Trabajo  # Import the Trabajo class
 
 with open('config.yml', 'r') as file:
     config = yaml.safe_load(file)
@@ -20,7 +19,6 @@ COLOR_PRIMARY = config['colors']['primary']
 COLOR_SECOND = config['colors']['second']
 
 # ASIGNACION de Clases
-
 
 def main(page: ft.Page) -> None:
     page.title = "Calculadora Programacion Entera"
@@ -50,10 +48,35 @@ def main(page: ft.Page) -> None:
         
         # Trabajo
         if page.route == '/trabajo': 
+            n_semanas_field = Field("Número de semanas", "n_semanas")
+            trabajadores_requeridos_field = FieldArray("Trabajadores requeridos por semana", "trabajadores_requeridos")
+            costo_excedente_field = Field("Costo excedente", "costo_excedente")
+            costo_contratacion_field = Field("Costo de contratación", "costo_contratacion")
+            costo_contratacion_ex_field = Field("Costo de contratación extra", "costo_contratacion_ex")
+
+            def calcular_trabajo(e):
+                n_semanas = int(n_semanas_field.content.value)
+                trabajadores_requeridos = list(map(int, trabajadores_requeridos_field.content.value.split(',')))
+                costo_excedente = int(costo_excedente_field.content.value)
+                costo_contratacion = int(costo_contratacion_field.content.value)
+                costo_contratacion_ex = int(costo_contratacion_ex_field.content.value)
+
+                trabajo = Trabajo(n_semanas, trabajadores_requeridos, costo_excedente, costo_contratacion, costo_contratacion_ex)
+                resultado = trabajo.optimize_workforce()
+                page.dialog = Alert([Text(f"Resultado: {resultado}")])
+                page.dialog.open = True
+                page.update()
+
             page.views.append(
                 ViewClass('/trabajo', 
                 [
                     Text("Trabajo", 35, "w800"),
+                    n_semanas_field,
+                    trabajadores_requeridos_field,
+                    costo_excedente_field,
+                    costo_contratacion_field,
+                    costo_contratacion_ex_field,
+                    Button("Calcular", calcular_trabajo),
                     Button("Go to Home", lambda _: page.go('/'))
                 ])
             )
