@@ -55,17 +55,29 @@ def main(page: ft.Page) -> None:
             costo_contratacion_ex_field = Field("Costo de contratación extra", "costo_contratacion_ex")
 
             def calcular_trabajo(e):
-                n_semanas = int(n_semanas_field.content.value)
-                trabajadores_requeridos = list(map(int, trabajadores_requeridos_field.content.value.split(',')))
-                costo_excedente = int(costo_excedente_field.content.value)
-                costo_contratacion = int(costo_contratacion_field.content.value)
-                costo_contratacion_ex = int(costo_contratacion_ex_field.content.value)
+                try:
+                    n_semanas = int(n_semanas_field.getValue())
+                    trabajadores_requeridos = list(map(int, trabajadores_requeridos_field.getValue().split(',')))
+                    costo_excedente = int(costo_excedente_field.getValue())
+                    costo_contratacion = int(costo_contratacion_field.getValue())
+                    costo_contratacion_ex = int(costo_contratacion_ex_field.getValue())
 
-                trabajo = Trabajo(n_semanas, trabajadores_requeridos, costo_excedente, costo_contratacion, costo_contratacion_ex)
-                resultado = trabajo.optimize_workforce()
-                page.dialog = Alert([Text(f"Resultado: {resultado}")])
-                page.dialog.open = True
-                page.update()
+                    trabajo = Trabajo(n_semanas, trabajadores_requeridos, costo_excedente, costo_contratacion, costo_contratacion_ex)
+                    resultado = trabajo.optimize_workforce()
+                    page.dialog = Alert([Text(f"Resultado: {resultado}")])
+                    page.dialog.open = True
+                    modal.openModal(page, "Resultado", [ft.Text(f"Resultado: {resultado}", color=COLOR_SECOND), Button("Cerrar", lambda _: page.close(modal))])
+                    createTXT(resultado, "Trabajo")
+                    page.update()
+                except ValueError:
+                    alert.openAlert(page, "Error: Por favor, ingrese valores numéricos válidos.")
+                except TypeError:
+                    alert.openAlert(page, "Error: Tipo de dato incorrecto.")
+                except AttributeError:
+                    alert.openAlert(page, "Error: Atributo no encontrado.")
+                except Exception as ex:
+                    alert.openAlert(page, f"Error inesperado: {str(ex)}")
+            
 
             page.views.append(
                 ViewClass('/trabajo', 
